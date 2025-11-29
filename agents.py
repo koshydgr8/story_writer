@@ -44,17 +44,14 @@ def story_chapter_agent():
         Idea = {story_idea}
         
         TASK:
-        Break this story into exactly 5 chapters.
+        Break this story into exactly 2 chapters.
         
         OUTPUT FORMAT (IMPORTANT):
         Return ONLY valid JSON in this exact format:
         {
           "chapters": [
             {"id": 1, "title": "...", "summary": "..."},
-            {"id": 2, "title": "...", "summary": "..."},
-            {"id": 3, "title": "...", "summary": "..."},
-            {"id": 4, "title": "...", "summary": "..."},
-            {"id": 5, "title": "...", "summary": "..."}
+            {"id": 2, "title": "...", "summary": "..."}
           ]
         }
         
@@ -82,7 +79,8 @@ def story_pipeline_agent():
 def chapter_elaborator_agent():
     chapter_writer = Agent(
         name="ChapterWriter",
-        model=Gemini(model="gemini-2.5-flash-lite"),
+        model=Gemini(model="gemini-2.5-flash-lite",
+            retry_options=retry_config),
         instruction="""
         You are elaborating the chapters of a book.
 
@@ -134,10 +132,15 @@ def chapter_elaborator_agent():
         TASK:
         Analyze the critique.
         - IF the critique is EXACTLY "APPROVED", you MUST call the `exit_loop` function and nothing else.
-        - OTHERWISE, Write the chapter with the critique's suggestion and emotions that can help the user connect with the story
+        - OTHERWISE, Write the chapter incorporating the critique's suggestion and emotions that can help the user connect with the story
 
-        OUTPUT:
-        Return the emotion as plain text.
+        OUTPUT RULE:
+        Return ONLY the chapter text.
+        NO commentary.
+        NO explanation.
+        NO markdown.
+        NO headers.
+        NO notes.
         """,
         output_key="chapter_text",
         tools=[exit_loop]
@@ -151,7 +154,7 @@ def chapter_elaborator_agent():
 
     chapter_elaborator = SequentialAgent(
         name="ChapterElaborator",
-        sub_agents=[chapter_writer, story_refinement_loop],
+        sub_agents=[chapter_writer, story_refinement_loop]
     )
 
     print("Chapter Elaborator created.")
