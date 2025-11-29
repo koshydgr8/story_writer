@@ -84,11 +84,10 @@ def chapter_elaborator_agent():
         name="ChapterWriter",
         model=Gemini(model="gemini-2.5-flash-lite"),
         instruction="""
-        You are writing one chapter of a book.
+        You are elaborating the chapters of a book.
 
         INPUT:
-        CHAPTER JSON:
-        {chapter}
+        CHAPTER JSON will be provided by the user.
         
         TASK:
         Write the full chapter based on title and summary.
@@ -158,6 +157,3 @@ def chapter_elaborator_agent():
     print("Chapter Elaborator created.")
 
     return chapter_elaborator
-
-def elaborate_chapters(chapters):
-    agent = LlmAgent
