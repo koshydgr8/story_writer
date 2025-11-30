@@ -2,20 +2,18 @@ import asyncio
 import json
 import os
 
-
-from google.adk.runners import Runner
+from google.adk.agents import LlmAgent
+from google.adk.models import Gemini
+from google.adk.plugins import LoggingPlugin
+from google.adk.runners import Runner, InMemoryRunner
 from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
-from agents import chapter_elaborator_agent, story_pipeline_agent
+from agents import chapter_elaborator_agent, story_pipeline_agent, retry_config
 from utils import get_chapters_from_events
 
 #Set this for Windows
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
-GOOGLE_API_KEY=''
-os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
-
 
 async def main():
 
@@ -30,8 +28,8 @@ async def main():
     await session_service.create_session(app_name="agents", user_id="book_user", session_id="outline")
 
     #Creating the Runners for the two Agents
-    runner_sp = Runner(agent=story_pipeline, app_name="agents", session_service= session_service)
-    runner_ce = Runner(agent=chapter_elaborator, app_name="agents", session_service = session_service)
+    runner_sp = Runner(agent=story_pipeline, app_name="agents", session_service= session_service, plugins=[LoggingPlugin()])
+    runner_ce = Runner(agent=chapter_elaborator, app_name="agents", session_service = session_service, plugins=[LoggingPlugin()])
 
     print("✅ Runners created.")
 
@@ -97,16 +95,5 @@ async def main():
         print(f"\n\n📖 {ch['title']}\n")
         print(ch["content"])
 
-
 if __name__ == "__main__":
     asyncio.run(main())
-
-def assemble_book(results):
-    book = []
-
-    for result in results:
-        chapter_text = result.get("chapter_text")
-        book.append(chapter_text)
-
-    return "\n\n".join(book)
-
