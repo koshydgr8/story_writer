@@ -19,6 +19,7 @@ Each agent performs a specialized function, and the entire system operates as a 
 
 This project was built under the **Freestyle Track** of the **Agents Intensive - Capstone Project**
 
+---
 
 ###  Problem Statement 
 
@@ -41,6 +42,7 @@ This project solves that problem by building an agent-orchestrated AI book gener
 
 The goal is not just to generate text — but to create a robust automated storytelling pipeline that behaves like a real publishing workflow.
 
+---
 
 ### Why agents?
 
@@ -65,6 +67,8 @@ Agents bring:
 ✅ Scalability : More agents = better workflows, not bigger prompts.
 
 This approach is closer to a human team of writers and editors than a chatbot.
+
+---
 
 ### What you created
 
@@ -146,6 +150,8 @@ APPROVED
 
 Combines chapters into a book.
 
+---
+
 ### Demo
 
 Input:
@@ -169,6 +175,7 @@ Chapter 2: The Sharing Forest
 
 `
 
+---
 
 ### The Build -- How you created it, what tools or technologies you used.
 - IDE: Pycharm
@@ -176,6 +183,8 @@ Chapter 2: The Sharing Forest
 - AI: Gemini 2.5 Lite
 - Logging: Logging Pluging
 - Runtime : Python
+
+---
 
 ### If I had more time, this is what I'd do
 
@@ -190,8 +199,9 @@ Chapter 2: The Sharing Forest
 
 Let users generate books with one click.
 
+---
 
-✅ SUMMARY
+### ✅ SUMMARY
 
 This is not a story generator.
 
